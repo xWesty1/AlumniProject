@@ -11,3 +11,5 @@ profile_url = raw_url.split("?", 1)[0]  # strip query params
 
 person = Person(profile_url, driver=driver)
 print(person.company, person.job_title)
+print("Profile URL: ", profile_url)
+

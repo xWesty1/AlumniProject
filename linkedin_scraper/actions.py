@@ -13,7 +13,7 @@ def page_has_loaded(driver):
     page_state = driver.execute_script('return document.readyState;')
     return page_state == 'complete'
 
-def login(driver, email=None, password=None, cookie = None, timeout=10):
+def login(driver, email=None, password=None, cookie = None, timeout=300):
     if cookie is not None:
         return _login_with_cookie(driver, cookie)
   
@@ -35,7 +35,15 @@ def login(driver, email=None, password=None, cookie = None, timeout=10):
         if remember:
             remember.submit()
   
-    element = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.CLASS_NAME, c.VERIFY_LOGIN_ID)))
+    print("Waiting for login to complete... (up to {} seconds)".format(timeout))
+    print("If LinkedIn shows a CAPTCHA or verification, please complete it manually.")
+    
+    try:
+        element = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.CLASS_NAME, c.VERIFY_LOGIN_ID)))
+        print("Login successful!")
+    except Exception as e:
+        print("Login verification timed out. Please ensure you completed any CAPTCHA or verification challenges.")
+        raise e
   
 def _login_with_cookie(driver, cookie):
     driver.get("https://www.linkedin.com/login")

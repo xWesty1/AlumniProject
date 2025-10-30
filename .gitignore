@@ -13,3 +13,8 @@ scrape.py
 creds.json
 venv
 *.zip
+alumni.csv
+alumni_urls.csv
+alumni_companies.csv
+.env
+
